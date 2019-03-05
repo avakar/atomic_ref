@@ -8,6 +8,8 @@
 #include "../../src/atomic_ref.msvc.x86.h"
 #elif defined(_MSC_VER) && defined(_M_AMD64)
 #include "../../src/atomic_ref.msvc.x64.h"
+#elif defined(__GNUC__)
+#include "../../src/atomic_ref.gcc.h"
 #else
 #error Unsupported platform
 #endif

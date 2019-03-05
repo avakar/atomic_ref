@@ -1,7 +1,8 @@
 # atomic_ref
 
 Header-only implementation of [std::atomic_ref][1] for C++14.
-Currently supports Microsoft Visual Studio on x86 and amd64.
+Currently supports Microsoft Visual Studio on x86 and amd64,
+and GCC/clang with support for __atomic builtins.
 
   [1]: https://en.cppreference.com/w/cpp/atomic/atomic_ref
 
