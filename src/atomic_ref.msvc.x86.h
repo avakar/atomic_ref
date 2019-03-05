@@ -1,3 +1,6 @@
+#ifndef AVAKAR_ATOMIC_REF_ATOMIC_REF_MSVC_X86_h
+#define AVAKAR_ATOMIC_REF_ATOMIC_REF_MSVC_X86_h
+
 #include "atomic_ref.msvc.x86_x64.h"
 
 #include <atomic>
@@ -147,3 +150,5 @@ auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
 
 }
 }
+
+#endif // _h
