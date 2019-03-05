@@ -2,7 +2,8 @@
 #include <type_traits>
 #include <intrin.h>
 
-namespace _avakar::atomic_ref {
+namespace _avakar {
+namespace atomic_ref {
 
 template <typename T>
 auto exchange(T & obj, T desired, std::memory_order order) noexcept
@@ -88,107 +89,123 @@ bool compare_exchange_strong(T & obj, T & expected, T desired, std::memory_order
 
 template <typename T>
 auto fetch_add(T & obj, T arg, std::memory_order order) noexcept
-	-> std::enable_if_t<sizeof(T) <= 4, T>
+	-> std::enable_if_t<sizeof(T) == 1, T>
 {
-	if constexpr (sizeof(T) == 1)
-	{
-		char r = _InterlockedExchangeAdd8((char *)&obj, (char &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 2)
-	{
-		short r = _InterlockedExchangeAdd16((short *)&obj, (short &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 4)
-	{
-		long r = _InterlockedExchangeAdd((long *)&obj, (long &)arg);
-		return (T &)r;
-	}
+	char r = _InterlockedExchangeAdd8((char *)&obj, (char &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_add(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 2, T>
+{
+	short r = _InterlockedExchangeAdd16((short *)&obj, (short &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_add(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 4, T>
+{
+	long r = _InterlockedExchangeAdd((long *)&obj, (long &)arg);
+	return (T &)r;
 }
 
 template <typename T>
 auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
-	-> std::enable_if_t<sizeof(T) <= 4, T>
+	-> std::enable_if_t<sizeof(T) == 1, T>
 {
-	if constexpr (sizeof(T) == 1)
-	{
-		char r = _InterlockedExchangeAdd8((char *)&obj, -(char &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 2)
-	{
-		short r = _InterlockedExchangeAdd16((short *)&obj, -(short &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 4)
-	{
-		long r = _InterlockedExchangeAdd((long *)&obj, -(long &)arg);
-		return (T &)r;
-	}
+	char r = _InterlockedExchangeAdd8((char *)&obj, -(char &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 2, T>
+{
+	short r = _InterlockedExchangeAdd16((short *)&obj, -(short &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 4, T>
+{
+	long r = _InterlockedExchangeAdd((long *)&obj, -(long &)arg);
+	return (T &)r;
 }
 
 template <typename T>
 auto fetch_and(T & obj, T arg, std::memory_order order) noexcept
-	-> std::enable_if_t<sizeof(T) <= 4, T>
+	-> std::enable_if_t<sizeof(T) == 1, T>
 {
-	if constexpr (sizeof(T) == 1)
-	{
-		char r = _InterlockedAnd8((char *)&obj, -(char &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 2)
-	{
-		short r = _InterlockedAnd16((short *)&obj, -(short &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 4)
-	{
-		long r = _InterlockedAnd((long *)&obj, -(long &)arg);
-		return (T &)r;
-	}
+	char r = _InterlockedAnd8((char *)&obj, (char &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_and(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 2, T>
+{
+	short r = _InterlockedAnd16((short *)&obj, (short &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_and(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 4, T>
+{
+	long r = _InterlockedAnd((long *)&obj, (long &)arg);
+	return (T &)r;
 }
 
 template <typename T>
 auto fetch_or(T & obj, T arg, std::memory_order order) noexcept
-	-> std::enable_if_t<sizeof(T) <= 4, T>
+	-> std::enable_if_t<sizeof(T) == 1, T>
 {
-	if constexpr (sizeof(T) == 1)
-	{
-		char r = _InterlockedOr8((char *)&obj, -(char &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 2)
-	{
-		short r = _InterlockedOr16((short *)&obj, -(short &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 4)
-	{
-		long r = _InterlockedOr((long *)&obj, -(long &)arg);
-		return (T &)r;
-	}
+	char r = _InterlockedOr8((char *)&obj, (char &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_or(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 2, T>
+{
+	short r = _InterlockedOr16((short *)&obj, (short &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_or(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 4, T>
+{
+	long r = _InterlockedOr((long *)&obj, (long &)arg);
+	return (T &)r;
 }
 
 template <typename T>
 auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
-	-> std::enable_if_t<sizeof(T) <= 4, T>
+	-> std::enable_if_t<sizeof(T) == 1, T>
 {
-	if constexpr (sizeof(T) == 1)
-	{
-		char r = _InterlockedXor8((char *)&obj, -(char &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 2)
-	{
-		short r = _InterlockedXor16((short *)&obj, -(short &)arg);
-		return (T &)r;
-	}
-	else if constexpr (sizeof(T) == 4)
-	{
-		long r = _InterlockedXor((long *)&obj, -(long &)arg);
-		return (T &)r;
-	}
+	char r = _InterlockedXor8((char *)&obj, (char &)arg);
+	return (T &)r;
 }
 
+template <typename T>
+auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 2, T>
+{
+	short r = _InterlockedXor16((short *)&obj, (short &)arg);
+	return (T &)r;
+}
+
+template <typename T>
+auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
+	-> std::enable_if_t<sizeof(T) == 4, T>
+{
+	long r = _InterlockedXor((long *)&obj, (long &)arg);
+	return (T &)r;
+}
+
+}
 }

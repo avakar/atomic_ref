@@ -1,6 +1,6 @@
 # atomic_ref
 
-Header-only implementation of [std::atomic_ref][1] for C++17.
+Header-only implementation of [std::atomic_ref][1] for C++14.
 Currently supports Microsoft Visual Studio on x86 and amd64.
 
   [1]: https://en.cppreference.com/w/cpp/atomic/atomic_ref

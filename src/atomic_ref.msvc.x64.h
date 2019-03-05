@@ -4,13 +4,20 @@
 #include <type_traits>
 #include <intrin.h>
 
-namespace _avakar::atomic_ref {
+namespace _avakar {
+namespace atomic_ref {
 
 template <typename T>
-constexpr bool is_always_lock_free_v = sizeof(T) <= 8;
+struct is_always_lock_free
+	: std::integral_constant<bool, sizeof(T) <= 8>
+{
+};
 
 template <typename T>
-constexpr bool is_always_wait_free_v = sizeof(T) <= 8;
+struct is_always_wait_free
+	: std::integral_constant<bool, sizeof(T) <= 8>
+{
+};
 
 template <typename T>
 auto load(T const & obj, std::memory_order order) noexcept
@@ -91,4 +98,5 @@ auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
 	return (T &)r;
 }
 
+}
 }

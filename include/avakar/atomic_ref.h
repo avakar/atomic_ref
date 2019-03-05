@@ -92,10 +92,10 @@ struct atomic_ref
 template <typename T, typename>
 struct _atomic_ref
 {
-	static_assert(std::is_trivially_copyable_v<T>);
+	static_assert(std::is_trivially_copyable<T>::value, "T must be TriviallyCopyable");
 
-	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free_v<T>;
-	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free_v<T>;
+	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free<T>::value;
+	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free<T>::value;
 	static constexpr std::size_t required_alignment = alignof(T);
 
 	using value_type = T;
@@ -155,10 +155,10 @@ private:
 template <typename T>
 struct _atomic_ref<T *>
 {
-	static_assert(std::is_trivially_copyable_v<T>);
+	static_assert(std::is_trivially_copyable<T>::value, "T must be TriviallyCopyable");
 
-	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free_v<T>;
-	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free_v<T>;
+	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free<T>::value;
+	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free<T>::value;
 	static constexpr std::size_t required_alignment = alignof(T);
 
 	using value_type = T *;
@@ -227,12 +227,12 @@ private:
 };
 
 template <typename T>
-struct _atomic_ref<T, std::enable_if_t<std::is_integral_v<T>>>
+struct _atomic_ref<T, std::enable_if_t<std::is_integral<T>::value>>
 {
-	static_assert(std::is_trivially_copyable_v<T>);
+	static_assert(std::is_trivially_copyable<T>::value, "T must be TriviallyCopyable");
 
-	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free_v<T>;
-	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free_v<T>;
+	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free<T>::value;
+	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free<T>::value;
 	static constexpr std::size_t required_alignment = alignof(T);
 
 	using value_type = T;
