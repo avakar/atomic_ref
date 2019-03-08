@@ -1,3 +1,6 @@
+#ifndef AVAKAR_ATOMIC_REF_ATOMIC_REF_GCC_h
+#define AVAKAR_ATOMIC_REF_ATOMIC_REF_GCC_h
+
 #include <atomic>
 #include <type_traits>
 
@@ -78,3 +81,5 @@ T fetch_xor(T & obj, T arg, std::memory_order order) noexcept
 
 }
 }
+
+#endif // _h
