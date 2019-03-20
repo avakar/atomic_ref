@@ -28,7 +28,7 @@ T load(T const & obj, std::memory_order order) noexcept
 template <typename T>
 void store(T & obj, T desired, std::memory_order order) noexcept
 {
-	return __atomic_store(&obj, &order);
+	__atomic_store(&obj, &desired, order);
 }
 
 template <typename T>
