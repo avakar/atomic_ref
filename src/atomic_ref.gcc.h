@@ -20,7 +20,13 @@ struct is_always_wait_free
 };
 
 template <typename T>
-T load(T const & obj, std::memory_order order) noexcept
+std::enable_if_t<std::is_enum<T>::value, T> load(T const & obj, std::memory_order order) noexcept
+{
+	return (T)__atomic_load_n((std::underlying_type_t<T> const *)&obj, order);
+}
+
+template <typename T>
+std::enable_if_t<!std::is_enum<T>::value, T> load(T const & obj, std::memory_order order) noexcept
 {
 	return __atomic_load_n(&obj, order);
 }
