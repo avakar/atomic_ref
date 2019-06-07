@@ -164,11 +164,9 @@ private:
 template <typename T>
 struct _atomic<T *>
 {
-	static_assert(std::is_trivially_copyable<T>::value, "T must be TriviallyCopyable");
-
-	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free<T>::value;
-	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free<T>::value;
-	static constexpr std::size_t required_alignment = alignof(T);
+	static constexpr bool is_always_lock_free = _avakar::atomic_ref::is_always_lock_free<T *>::value;
+	static constexpr bool is_always_wait_free = _avakar::atomic_ref::is_always_wait_free<T *>::value;
+	static constexpr std::size_t required_alignment = alignof(T *);
 
 	using value_type = T *;
 	using difference_type = std::ptrdiff_t;
