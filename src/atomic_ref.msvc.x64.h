@@ -45,6 +45,7 @@ template <typename T>
 auto exchange(T & obj, T desired, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedExchange64((long long *)&obj, (long long &)desired);
 	return (T &)r;
 }
@@ -53,6 +54,7 @@ template <typename T>
 auto fetch_add(T & obj, T arg, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedExchangeAdd64((long long *)&obj, (long long &)arg);
 	return (T &)r;
 }
@@ -61,6 +63,7 @@ template <typename T>
 auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedExchangeAdd64((long long *)&obj, -(long long &)arg);
 	return (T &)r;
 }
@@ -68,12 +71,14 @@ auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
 template <typename T>
 auto fetch_add(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
 {
+	(void)order;
 	return (T *)_InterlockedExchangeAdd64((long long *)&obj, arg * sizeof(T));
 }
 
 template <typename T>
 auto fetch_sub(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
 {
+	(void)order;
 	return (T *)_InterlockedExchangeAdd64((long long *)&obj, -arg * sizeof(T));
 }
 
@@ -81,6 +86,7 @@ template <typename T>
 auto fetch_and(T & obj, T arg, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedAnd64((long long *)&obj, (long long &)arg);
 	return (T &)r;
 }
@@ -89,6 +95,7 @@ template <typename T>
 auto fetch_or(T & obj, T arg, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedOr64((long long *)&obj, (long long &)arg);
 	return (T &)r;
 }
@@ -97,6 +104,7 @@ template <typename T>
 auto fetch_xor(T & obj, T arg, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
 	long long r = _InterlockedXor64((long long *)&obj, (long long &)arg);
 	return (T &)r;
 }
