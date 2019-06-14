@@ -61,6 +61,8 @@ template <typename T>
 auto exchange(T & obj, T desired, std::memory_order order) noexcept
 	-> std::enable_if_t<sizeof(T) == 8, T>
 {
+	(void)order;
+
 	long long exp = (long long &)obj;
 	for (;;)
 	{
@@ -100,12 +102,14 @@ auto fetch_sub(T & obj, T arg, std::memory_order order) noexcept
 template <typename T>
 auto fetch_add(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
 {
+	(void)order;
 	return (T *)_InterlockedExchangeAdd((long *)&obj, arg * sizeof(T));
 }
 
 template <typename T>
 auto fetch_sub(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
 {
+	(void)order;
 	return (T *)_InterlockedExchangeAdd((long *)&obj, -arg * sizeof(T));
 }
 
