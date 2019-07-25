@@ -175,7 +175,7 @@ struct _atomic<T *>
 	_atomic(_atomic const &) = delete;
 	_atomic & operator=(_atomic const &) = delete;
 
-	_atomic(T desired) noexcept
+	_atomic(value_type desired) noexcept
 		: _obj(desired)
 	{
 	}
