@@ -1,5 +1,7 @@
 # atomic_ref
 
+![CI](https://github.com/avakar/atomic_ref/workflows/CI/badge.svg)
+
 Header-only implementation of [std::atomic_ref][1] for C++14.
 Currently supports Microsoft Visual Studio on x86 and amd64,
 and GCC/clang with support for __atomic builtins.
