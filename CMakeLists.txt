@@ -1,9 +1,14 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.12)
 project(avakar_atomic_ref)
 
 add_library(avakar_atomic_ref INTERFACE)
 target_include_directories(avakar_atomic_ref INTERFACE include)
 target_compile_features(avakar_atomic_ref INTERFACE cxx_std_14)
 
-add_executable(avakar_atomic_ref_test test/test.cpp)
-target_link_libraries(avakar_atomic_ref_test avakar_atomic_ref)
+add_library(avakar::atomic_ref ALIAS avakar_atomic_ref)
+
+include(CTest)
+if (BUILD_TESTING)
+	add_executable(avakar_atomic_ref_test test/test.cpp)
+	target_link_libraries(avakar_atomic_ref_test avakar::atomic_ref)
+endif()
