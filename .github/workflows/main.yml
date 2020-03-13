@@ -1,0 +1,19 @@
+name: CI
+on: push
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-2019, ubuntu-18.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run CMake
+      run: |
+        mkdir _build
+        cd _build
+        cmake ..
+    - name: Build
+      run: |
+        cmake --build _build
