@@ -6,6 +6,16 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019, ubuntu-18.04]
+        platform: [Win32, x64, '']
+        build_config: [Debug, RelWithDebInfo]
+        exclude:
+          - os: windows-2019
+            platform: ''
+          - os: ubuntu-18.04
+            platform: Win32
+          - os: ubuntu-18.04
+            platform: x64
+
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -13,7 +23,12 @@ jobs:
       run: |
         mkdir _build
         cd _build
-        cmake ..
+        cmake .. -A "${{ matrix.platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_config }}"
     - name: Build
       run: |
-        cmake --build _build
+        cmake --build _build --config "${{ matrix.build_config }}"
+    - name: Run Tests
+      if: '!matrix.skip_tests'
+      run: |
+        cd _build
+        ctest -C "${{ matrix.build_config }}"
