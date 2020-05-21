@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019, ubuntu-18.04]
-        platform: [Win32, x64, '']
+        platform: [Win32, x64, ARM64, '']
         build_config: [Debug, RelWithDebInfo]
         exclude:
           - os: windows-2019
@@ -15,6 +15,12 @@ jobs:
             platform: Win32
           - os: ubuntu-18.04
             platform: x64
+          - os: ubuntu-18.04
+            platform: ARM64
+        include:
+          - os: windows-2019
+            platform: ARM64
+            skip_tests: true
 
     runs-on: ${{ matrix.os }}
     steps:
