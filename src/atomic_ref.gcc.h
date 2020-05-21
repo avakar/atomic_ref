@@ -55,34 +55,46 @@ bool compare_exchange_strong(T & obj, T & expected, T desired, std::memory_order
 	return __atomic_compare_exchange(&obj, &expected, &desired, false, success, failure);
 }
 
-template <typename T, typename U>
-T fetch_add(T & obj, U arg, std::memory_order order) noexcept
+template <typename T>
+T fetch_add(T & obj, T arg, std::memory_order order) noexcept
 {
 	return __atomic_fetch_add(&obj, arg, order);
 }
 
-template <typename T, typename U>
-T fetch_sub(T & obj, U arg, std::memory_order order) noexcept
+template <typename T>
+T fetch_sub(T & obj, T arg, std::memory_order order) noexcept
 {
 	return __atomic_fetch_sub(&obj, arg, order);
 }
 
-template <typename T, typename U>
-T fetch_and(T & obj, U arg, std::memory_order order) noexcept
+template <typename T>
+T fetch_and(T & obj, T arg, std::memory_order order) noexcept
 {
 	return __atomic_fetch_and(&obj, arg, order);
 }
 
-template <typename T, typename U>
-T fetch_or(T & obj, U arg, std::memory_order order) noexcept
+template <typename T>
+T fetch_or(T & obj, T arg, std::memory_order order) noexcept
 {
 	return __atomic_fetch_or(&obj, arg, order);
 }
 
-template <typename T, typename U>
-T fetch_xor(T & obj, U arg, std::memory_order order) noexcept
+template <typename T>
+T fetch_xor(T & obj, T arg, std::memory_order order) noexcept
 {
 	return __atomic_fetch_xor(&obj, arg, order);
+}
+
+template <typename T>
+auto fetch_add(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
+{
+	return __atomic_fetch_add(&obj, arg * sizeof(T), order);
+}
+
+template <typename T>
+auto fetch_sub(T * & obj, std::ptrdiff_t arg, std::memory_order order) noexcept
+{
+	return __atomic_fetch_sub(&obj, arg * sizeof(T), order);
 }
 
 }
