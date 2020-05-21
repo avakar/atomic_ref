@@ -1,17 +1,40 @@
 #include <avakar/atomic_ref.h>
-#include <stdint.h>
+#include <catch2/catch.hpp>
+using avakar::atomic_ref;
 
-int main()
+TEST_CASE("Pointer add/sub is correct")
 {
-	using avakar::atomic_ref;
+	int v = 0;
+	atomic_ref<int> a(v);
 
-	uint64_t k = 0;
-	atomic_ref<uint64_t> ak(k);
+	REQUIRE(a.fetch_add(1) == 0);
+	REQUIRE(a.fetch_add(1) == 1);
+	REQUIRE(v == 2);
+	REQUIRE(a.fetch_sub(1) == 2);
+	REQUIRE(a.fetch_sub(1) == 1);
+	REQUIRE(v == 0);
 
-	uint64_t * ptr = &k;
-	atomic_ref<uint64_t *> aptr(ptr);
+	REQUIRE(a.fetch_add(2) == 0);
+	REQUIRE(v == 2);
+	REQUIRE(a.fetch_sub(2) == 2);
+	REQUIRE(v == 0);
+}
 
-	auto ppp = aptr.fetch_add(1);
+TEST_CASE("Pointer arithmetic is correct")
+{
+	int arr[] = { 1, 2, 3 };
+	int * p = arr;
+	atomic_ref<int *> a(p);
 
-	return (int)ak.exchange(1);
+	REQUIRE(a.fetch_add(1) == &arr[0]);
+	REQUIRE(a.fetch_add(1) == &arr[1]);
+	REQUIRE(p == &arr[2]);
+	REQUIRE(a.fetch_sub(1) == &arr[2]);
+	REQUIRE(a.fetch_sub(1) == &arr[1]);
+	REQUIRE(p == &arr[0]);
+
+	REQUIRE(a.fetch_add(2) == &arr[0]);
+	REQUIRE(p == &arr[2]);
+	REQUIRE(a.fetch_sub(2) == &arr[2]);
+	REQUIRE(p == &arr[0]);
 }
